@@ -133,6 +133,11 @@ module cla64_flat(
   // ---------------------------------------------------------------------
   // Step 3: sum bits
   // ---------------------------------------------------------------------
-  assign #(2) sum = p ^ {c[63:0], cin};
+  genvar j;
+  generate
+    for (j = 0; j < 64; j = j + 1) begin : gen_sum
+      xor #(2) (sum[j], p[j], c[j]);
+    end
+  endgenerate
 
 endmodule

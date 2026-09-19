@@ -8,6 +8,11 @@
 // Write your testbench first, let it tell you something is wrong, THEN
 // come back and fix this file.
 
+// comp2.v
+// 2-bit unsigned magnitude comparator.
+// Given two 2-bit values A and B, exactly one of GT, LT, EQ should be 1
+// for any input combination.
+
 module comp2 (
   input  [1:0] A,
   input  [1:0] B,
@@ -16,8 +21,13 @@ module comp2 (
   output       EQ
 );
 
-  assign EQ = (A == B);
-  assign GT = (A >  B);
-  assign LT = (A <  B);
+  // EQ: A equals B when both bits match
+  assign EQ = (A[1] ^~ B[1]) & (A[0] ^~ B[0]);
+
+  // GT: A > B
+  assign GT = (A[1] & ~B[1]) | ((A[1] ^~ B[1]) & (A[0] & ~B[0]));
+
+  // LT: A < B
+  assign LT = (~A[1] & B[1]) | ((A[1] ^~ B[1]) & (~A[0] & B[0]));
 
 endmodule
